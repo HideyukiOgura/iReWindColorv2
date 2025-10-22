@@ -10,9 +10,9 @@ This is the official PyTorch implementation of the paper:
 
 ## Demo
 
-Try colorizing images yourself with the [demo software](https://github.com/pmh9960/iColoriT/tree/main/iColoriT_demo).
+Try colorizing images yourself with the [demo software](https://github.com/HideyukiOgura/iReWindColorv2/edit/main/demo/).
 
-## Pretrained iColoriT
+## Pretrained
 
 Checkpoints for iReWindColor models are available in the links below.
 - [iReWindColor](https://drive.google.com/file/d/12qVzjag87ynDLcaoKew8YzEQmx5zZIEz/view?usp=sharing)
@@ -28,7 +28,7 @@ git clone https://github.com/HideyukiOgura/iReWindColorv2.git
 pip install -r requirements.txt
 ```
 
-### Testing iColoriT
+### Testing
 
 You can generate colorization results when iColoriT is provided with randomly selected groundtruth hints from color images. 
 Please fill in the path to the model checkpoints and validation directories in the scripts/infer.sh file.
