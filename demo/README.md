@@ -2,7 +2,7 @@
 
 We provide a GUI which can run on CPU-only devices as well as devices with a GPU. 
 
-Try out iColoriT with your own images and color hints! 
+Try out iReWindColor  with your own images and color hints! 
 
 <p align="center">
   <img width="90%" src="../docs/demo.gif">
@@ -25,7 +25,7 @@ pip install -r requirements.txt
 
 ## Run
 
-Once you have satisfied all the requirements, you can run the base iColoriT model by executing
+Once you have satisfied all the requirements, you can run the base iReWindColor model by executing
 
 ```
 bash demo.sh --target_image <path/to/image>
