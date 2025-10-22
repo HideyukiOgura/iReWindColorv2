@@ -54,7 +54,7 @@ def get_args():
     parser.set_defaults(pin_mem=True)
 
     # Model parameters
-    parser.add_argument('--model', default='icolorit_base_4ch_patch16_224', type=str, help='Name of model to inference')
+    parser.add_argument('--model', default='irewindcolor', type=str, help='Name of model to inference')
     parser.add_argument('--use_rpb', action='store_true', help='relative positional bias')
     parser.add_argument('--no_use_rpb', action='store_false', dest='use_rpb')
     parser.set_defaults(use_rpb=True)
