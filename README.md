@@ -30,7 +30,7 @@ pip install -r requirements.txt
 
 ### Testing
 
-You can generate colorization results when iColoriT is provided with randomly selected groundtruth hints from color images. 
+You can generate colorization results when iReWindColor is provided with randomly selected groundtruth hints from color images. 
 Please fill in the path to the model checkpoints and validation directories in the scripts/infer.sh file.
 
 ```
