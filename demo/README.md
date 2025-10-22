@@ -1,44 +1,36 @@
-# iColoriT Demo Software 🎨
+# Demo Software
 
 We provide a GUI which can run on CPU-only devices as well as devices with a GPU. 
 
 Try out iColoriT with your own images and color hints! 
 
 <p align="center">
-  <img width="90%" src="../docs/iColoriT_demo.gif">
+  <img width="90%" src="../docs/demo.gif">
 </p>
 
-## Pretrained iColoriT
+## Pretrained 
 
-Checkpoints for iColoriT models are available in the links below.
-
-|  	| Backbone 	| Link 	|
-|:---:	|:---:	|:---:	|
-| iColoriT	| ViT-B 	| [iColoriT (Google Drive)](https://drive.google.com/file/d/16i9ulB4VRbFLbLlAa7UjIQR6J334BeKW/view?usp=sharing)	|
-| iColoriT-S 	| ViT-S 	| [iColoriT-S (Google Drive)](https://drive.google.com/file/d/1yKwFTQGDBvr9B7NIyXhxQH0K-BNlCs4L/view?usp=sharing) 	|
-| iColoriT-T 	| ViT-Ti 	| [iColoriT-T (Google Drive)](https://drive.google.com/file/d/1GMmjfxAoM95cABwlZD8555WxI7nmIZrR/view?usp=sharing)	|
+Checkpoints for iReWindColor models are available in the links below.
+- [iReWindColor](https://drive.google.com/file/d/12qVzjag87ynDLcaoKew8YzEQmx5zZIEz/view?usp=sharing)
+- [iReWindColorv2](https://drive.google.com/file/d/1I-zHixTHQci7GaVB8_NxkFTUILy5Xf6s/view?usp=sharing)
 
 
 ## Installation
 
-Our code is implemented in Python 3.8, torch>=1.8.2, and PyQt5
+Our code is implemented in Python 3.8, torch>=1.8.2
 ```
-git clone https://github.com/pmh9960/iColoriT.git
+git clone https://github.com/HideyukiOgura/iReWindColorv2.git
 pip install -r requirements.txt
 ```
 
-## Run iColoriT
+## Run
 
 Once you have satisfied all the requirements, you can run the base iColoriT model by executing
 
 ```
-python3 icolorit_ui.py --model_path <path/to/checkpoint> --target_image <path/to/image>
+bash demo.sh --target_image <path/to/image>
 ```
 
-
-<p align="center">
-  <img width="70%" src="../docs/ui_example.png">
-</p>
 
 ### Controls
 
