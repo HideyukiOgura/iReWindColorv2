@@ -27,9 +27,10 @@ from torch.utils.data import DataLoader
 from tqdm import tqdm
 
 import modeling
+import model
 from datasets import build_fixed_validation_dataset
 from utils import lab2rgb, psnr, rgb2lab, seed_worker
-
+from modeling import SIGGRAPHGenerator
 
 def get_args():
     parser = argparse.ArgumentParser('Infer Colorization', add_help=False)
@@ -53,7 +54,7 @@ def get_args():
     parser.set_defaults(pin_mem=True)
 
     # Model parameters
-    parser.add_argument('--model', default='irewindcolor', type=str, help='Name of model to inference')
+    parser.add_argument('--model', default='icolorit_base_4ch_patch16_224', type=str, help='Name of model to inference')
     parser.add_argument('--use_rpb', action='store_true', help='relative positional bias')
     parser.add_argument('--no_use_rpb', action='store_false', dest='use_rpb')
     parser.set_defaults(use_rpb=True)
@@ -120,15 +121,16 @@ def main(args):
     device = torch.device(args.device)
     cudnn.benchmark = True
 
-    model = get_model(args)
-    patch_size = model.patch_embed.patch_size
-    print("Patch size = %s" % str(patch_size))
-    args.window_size = (args.input_size // patch_size[0], args.input_size // patch_size[1])
-    args.patch_size = patch_size
+    # model = get_model(args)
+    model = SIGGRAPHGenerator(input_nc=4, output_nc=2)
+    # # patch_size = model.patch_embed.patch_size
+    # print("Patch size = %s" % str(patch_size))
+    # args.window_size = (args.input_size // patch_size[0], args.input_size // patch_size[1])
+    # args.patch_size = patch_size
 
     model.to(device)
     checkpoint = torch.load(args.model_path, map_location='cpu')
-    model.load_state_dict(checkpoint['model'])
+    model.load_state_dict(checkpoint)
     model.eval()
 
     psnr_sum = dict(zip(args.val_hint_list, [0.] * len(args.val_hint_list)))
@@ -151,14 +153,14 @@ def main(args):
         for step, batch in enumerate(data_loader_val):
             (images, bool_hints), targets, names = batch
             B, _, H, W = images.shape
-            h, w = H // patch_size[0], W // patch_size[1]
+            # h, w = H // patch_size[0], W // patch_size[1]
 
             # batch preparation
             images = images.to(device, non_blocking=True)
             images_lab = rgb2lab(images)
-            images_patch = rearrange(images_lab, 'b c (h p1) (w p2) -> b (h w) (p1 p2 c)',
-                                     p1=patch_size[0], p2=patch_size[1])
-            labels = rearrange(images_patch, 'b n (p1 p2 c) -> b n (p1 p2) c', p1=patch_size[0], p2=patch_size[1])
+            # images_patch = rearrange(images_lab, 'b c (h p1) (w p2) -> b (h w) (p1 p2 c)',
+                                    #  p1=patch_size[0], p2=patch_size[1])
+            # labels = rearrange(images_patch, 'b n (p1 p2 c) -> b n (p1 p2) c', p1=patch_size[0], p2=patch_size[1])
 
             for i, count in enumerate(args.val_hint_list):
                 bool_hint = bool_hints[:, i]
@@ -166,11 +168,13 @@ def main(args):
 
                 with torch.cuda.amp.autocast():
                     outputs = model(images_lab.clone(), bool_hint.clone())
-                    outputs = rearrange(outputs, 'b n (p1 p2 c) -> b n (p1 p2) c', p1=patch_size[0], p2=patch_size[1])
+                    # outputs, _, _ = model(images_lab.clone(), bool_hint.clone())
+                    # outputs = rearrange(outputs, 'b n (p1 p2 c) -> b n (p1 p2) c', p1=patch_size[0], p2=patch_size[1])
 
-                pred_imgs_lab = torch.cat((labels[:, :, :, 0].unsqueeze(3), outputs), dim=3)
-                pred_imgs_lab = rearrange(pred_imgs_lab, 'b (h w) (p1 p2) c -> b c (h p1) (w p2)',
-                                          h=h, w=w, p1=patch_size[0], p2=patch_size[1])
+                # pred_imgs_lab = torch.cat((labels[:, :, :, 0].unsqueeze(3), outputs), dim=3)
+                # pred_imgs_lab = rearrange(pred_imgs_lab, 'b (h w) (p1 p2) c -> b c (h p1) (w p2)',
+                #                           h=h, w=w, p1=patch_size[0], p2=patch_size[1])
+                pred_imgs_lab = torch.cat((images_lab[:,0,:,:].unsqueeze(1), outputs), dim=1)
                 pred_imgs = lab2rgb(pred_imgs_lab)
 
                 psnr_sum[count] += psnr(images, pred_imgs).item() * B
