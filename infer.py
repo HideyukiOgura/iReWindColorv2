@@ -119,8 +119,7 @@ def main(args):
     device = torch.device(args.device)
     cudnn.benchmark = True
 
-    # model = get_model(args)
-    model = SIGGRAPHGenerator(input_nc=4, output_nc=2)
+    model = get_model(args)
     # # patch_size = model.patch_embed.patch_size
     # print("Patch size = %s" % str(patch_size))
     # args.window_size = (args.input_size // patch_size[0], args.input_size // patch_size[1])
