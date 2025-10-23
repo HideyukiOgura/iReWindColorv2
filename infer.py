@@ -27,10 +27,8 @@ from torch.utils.data import DataLoader
 from tqdm import tqdm
 
 import modeling
-import model
 from datasets import build_fixed_validation_dataset
 from utils import lab2rgb, psnr, rgb2lab, seed_worker
-from modeling import SIGGRAPHGenerator
 
 def get_args():
     parser = argparse.ArgumentParser('Infer Colorization', add_help=False)
